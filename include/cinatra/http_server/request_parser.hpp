@@ -295,10 +295,16 @@ namespace cinatra
 					return indeterminate;
 				}
 			case SPACE_BEFORE_HEADER_VALUE:
-				if (input == ' ')
+				if (input == ' '){
 					return indeterminate;
-				else if(is_ctl(input))
+				}else if (input == '\r'){
+					state_ = EXPECTING_NEWLINE_1;
+					return indeterminate;
+				}else if (input == '\n'){
+					return indeterminate;
+				}else if(is_ctl(input)){
 					return bad;
+				}
 				current_header_val_.push_back(input);
 				state_ = HEADER_VALUE;
 				return indeterminate;
